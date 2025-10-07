@@ -1,4 +1,7 @@
 {
+    "name": "yourname/my-php-app",
+    "description": "A simple PHP application for testing and CI demo.",
+    "license": "proprietary",
     "require": {
         "nesbot/carbon": "^3.10",
         "phpunit/phpunit": "^10"
