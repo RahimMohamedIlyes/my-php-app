@@ -1,1 +1,1 @@
-{"version":2,"defects":{"HelloTest::testCarbonTest":7},"times":{"HelloTest::testSayHello":0.004,"HelloTest::testCarbonTest":0.043}}
+{"version":2,"defects":{"HelloTest::testCarbonTest":7},"times":{"HelloTest::testSayHello":0.014,"HelloTest::testCarbonTest":0.043}}
