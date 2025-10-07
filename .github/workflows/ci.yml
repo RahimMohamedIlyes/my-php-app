@@ -2,25 +2,43 @@ name: PHP CI
 
 on:
   push:
+    branches: [ main, develop ]
   pull_request:
+    branches: [ main, develop ]
 
 jobs:
   test:
     name: Run PHPUnit Tests
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        php: [8.1, 8.2, 8.3]   # Test on multiple PHP versions
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up PHP
+      - name: Set up PHP ${{ matrix.php }}
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.2
+          php-version: ${{ matrix.php }}
           extensions: mbstring, pdo, pdo_mysql
+          coverage: xdebug   # Enables test coverage reports
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate --strict
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
 
       - name: Install Composer dependencies
-        run: composer install --no-interaction --prefer-dist
+        run: composer install --no-interaction --prefer-dist --no-progress
 
-      - name: Run PHPUnit
-        run: ./vendor/bin/phpunit --configuration phpunit.xml
+      - name: Run PHPUnit tests
+        run: vendor/bin/phpunit --configuration phpunit.xml --coverage-text
