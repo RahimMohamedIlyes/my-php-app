@@ -21,8 +21,6 @@ jobs:
 
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist
-        working-directory: src
 
       - name: Run PHPUnit
         run: ./vendor/bin/phpunit --configuration phpunit.xml
-        working-directory: src

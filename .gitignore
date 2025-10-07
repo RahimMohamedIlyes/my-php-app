@@ -1,4 +1,2 @@
-./src/vendor/
-db_data/
-logs/
+vendor/
 .env
