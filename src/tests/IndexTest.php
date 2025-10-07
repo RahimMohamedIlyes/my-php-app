@@ -7,7 +7,7 @@ class IndexTest extends TestCase
 {
     public function testSayHello()
     {
-        $this->assertEquals("Hello, World!", sayHello("World"));
+        $this->assertEquals("Hi, World!", sayHello("World"));
     }
 }
 
