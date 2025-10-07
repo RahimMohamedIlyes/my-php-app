@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="index.php"
+         colors="true"
+         verbose="true"
+         stopOnFailure="false">
+    
+    <testsuites>
+        <testsuite name="App Test Suite">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <logging>
+        <log type="testdox-text" target="tests/testdox.txt"/>
+        <log type="junit" target="tests/junit.xml"/>
+    </logging>
+</phpunit>
