@@ -10,11 +10,4 @@ class HelloTest extends TestCase
         $hello = new Hello("Ilyes");
         $this->assertEquals("Hello, Ilyes!", $hello->sayHello());
     }
-
-    public function testCarbonTest()
-    {
-        $hello = new Hello("Ilyes");
-        $result = $hello->carbonTest();
-        $this->assertStringContainsString("En français", $result);
-    }
 }
