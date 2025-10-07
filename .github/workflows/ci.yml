@@ -1,4 +1,4 @@
-name: PHP CI
+name: PHP CI with MySQL
 
 on:
   push:
@@ -6,7 +6,6 @@ on:
 
 jobs:
   test:
-    name: Run PHPUnit Tests
     runs-on: ubuntu-latest
 
     services:
@@ -26,7 +25,7 @@ jobs:
           --health-retries=5
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Set up PHP
@@ -37,6 +36,7 @@ jobs:
 
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist
+        working-directory: src
 
       - name: Wait for MySQL
         run: |
@@ -46,5 +46,10 @@ jobs:
             sleep 3
           done
 
+      - name: Import database dump
+        run: |
+          mysql -h 127.0.0.1 -u root -prootpass mydb < src/database/dump.sql
+
       - name: Run PHPUnit
-        run: vendor/bin/phpunit --configuration src/phpunit.xml
+        run: ./vendor/bin/phpunit --configuration phpunit.xml
+        working-directory: src
