@@ -1,4 +1,4 @@
-name: PHP CI with MySQL
+name: PHP CI
 
 on:
   push:
@@ -6,26 +6,11 @@ on:
 
 jobs:
   test:
+    name: Run PHPUnit Tests
     runs-on: ubuntu-latest
 
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: rootpass
-          MYSQL_DATABASE: mydb
-          MYSQL_USER: user
-          MYSQL_PASSWORD: userpass
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping -h localhost"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
-
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up PHP
@@ -37,18 +22,6 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist
         working-directory: src
-
-      - name: Wait for MySQL
-        run: |
-          sudo apt-get update && sudo apt-get install -y netcat-openbsd
-          until nc -z 127.0.0.1 3306; do
-            echo "Waiting for MySQL..."
-            sleep 3
-          done
-
-      - name: Import database dump
-        run: |
-          mysql -h 127.0.0.1 -u root -prootpass mydb < src/database/dump.sql
 
       - name: Run PHPUnit
         run: ./vendor/bin/phpunit --configuration phpunit.xml
